@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "429795609631",
+    "firebase_url": "https://reclamation-esprit-c3c33-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "reclamation-esprit-c3c33",
+    "storage_bucket": "reclamation-esprit-c3c33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429795609631:android:bb69eebcfcac6e3eae592a",
+        "android_client_info": {
+          "package_name": "com.example.reclamationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429795609631-8lrg64b9cn0lt7p73ctvj94vf4s0dcft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN7bxzhKzhHmEf6V55ucwil_O_AsV1zdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429795609631-8lrg64b9cn0lt7p73ctvj94vf4s0dcft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

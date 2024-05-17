@@ -27,16 +27,6 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
   final TextEditingController msgController = TextEditingController();
 
   File? image;
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      throw Exception('Failed to pick image $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,161 +47,179 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: constraints.maxWidth * 0.09,
-                    backgroundImage:
-                        NetworkImage(connectedUser.profilePicture!),
-                  ),
-                  SizedBox(
-                    width: constraints.maxWidth * 0.05,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Welcome back :',
-                        style: TextStyle(
-                            color: AppTheme.lightSecondaryText,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30),
-                      ),
-                      Text(
-                        '${connectedUser.fullName}',
-                        style: const TextStyle(
-                            color: AppTheme.lightSecondaryText,
-                            fontWeight: FontWeight.w900),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Form(
-                key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: constraints.maxWidth * 0.9,
-                        child: TextFormField(
-                          controller: objecttController,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            hintText: 'Subject',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.subject,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter an object';
-                            }
-                            return null;
-                          },
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: constraints.maxWidth * 0.09,
+                          backgroundImage:
+                              NetworkImage(connectedUser.profilePicture!),
                         ),
-                      ),
-                      Divider(
-                        height: constraints.maxHeight * 0.02,
-                        color: AppTheme.lightBackground,
-                      ),
-                      SizedBox(
-                        width: constraints.maxWidth * 0.9,
-                        child: TextFormField(
-                          controller: msgController,
-                          maxLines: 5,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            hintText: 'your reclamation text',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.mail,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a message';
-                            }
-                            return null;
-                          },
+                        SizedBox(
+                          width: constraints.maxWidth * 0.05,
                         ),
-                      ),
-                      SizedBox(
-                        height: constraints.maxHeight * 0.02,
-                      ),
-                      image != null
-                          ? Center(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
-                                        child: Image.asset(
-                                          "assets/icons/gallery.png",
-                                          width: constraints.maxWidth * 0.1,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Welcome back :',
+                              style: TextStyle(
+                                  color: AppTheme.lightSecondaryText,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30),
+                            ),
+                            Text(
+                              '${connectedUser.fullName}',
+                              style: const TextStyle(
+                                  color: AppTheme.lightSecondaryText,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Form(
+                      key: formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: constraints.maxWidth * 0.9,
+                              child: TextFormField(
+                                controller: objecttController,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  hintText: 'Subject',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.subject,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter an object';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Divider(
+                              height: constraints.maxHeight * 0.02,
+                              color: AppTheme.lightBackground,
+                            ),
+                            SizedBox(
+                              width: constraints.maxWidth * 0.9,
+                              child: TextFormField(
+                                controller: msgController,
+                                maxLines: 5,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  hintText: 'your reclamation text',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.mail,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a message';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: constraints.maxHeight * 0.02,
+                            ),
+                            image != null
+                                ? Center(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextButton(
+                                              child: Image.asset(
+                                                "assets/icons/gallery.png",
+                                                width:
+                                                    constraints.maxWidth * 0.1,
+                                              ),
+                                              onPressed: () => pickImage(),
+                                            ),
+                                            Image.file(
+                                              image!,
+                                              width: constraints.maxWidth * 0.4,
+                                            ),
+                                          ],
                                         ),
-                                        onPressed: () => pickImage(),
-                                      ),
-                                      Image.file(
-                                        image!,
-                                        width: constraints.maxWidth * 0.4,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: constraints.maxHeight * 0.02,
-                                  ),
-                                  addReclamationBtn(
-                                      formKey,
-                                      connectedUser,
-                                      objecttController,
-                                      msgController,
-                                      image,
-                                      constraints),
-                                ],
-                              ),
-                            )
-                          : Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                    child: Image.asset(
-                                      "assets/icons/gallery.png",
-                                      width: constraints.maxWidth * 0.1,
+                                        SizedBox(
+                                          height: constraints.maxHeight * 0.02,
+                                        ),
+                                        addReclamationBtn(
+                                            formKey,
+                                            connectedUser,
+                                            objecttController,
+                                            msgController,
+                                            image,
+                                            constraints),
+                                      ],
                                     ),
-                                    onPressed: () => pickImage(),
+                                  )
+                                : Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                          child: Image.asset(
+                                            "assets/icons/gallery.png",
+                                            width: constraints.maxWidth * 0.1,
+                                          ),
+                                          onPressed: () => pickImage(),
+                                        ),
+                                        const Divider(),
+                                        addReclamationBtn(
+                                            formKey,
+                                            connectedUser,
+                                            objecttController,
+                                            msgController,
+                                            image,
+                                            constraints),
+                                      ],
+                                    ),
                                   ),
-                                  const Divider(),
-                                  addReclamationBtn(
-                                      formKey,
-                                      connectedUser,
-                                      objecttController,
-                                      msgController,
-                                      image,
-                                      constraints),
-                                ],
-                              ),
-                            ),
-                    ],
-                  ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Image.asset(
+                  fit: BoxFit.cover,
+                  width: constraints.maxWidth * 0.4,
+                  height: constraints.maxHeight * 0.25,
+                  "assets/icons/design.png",
                 ),
               ),
             ],
@@ -219,6 +227,17 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
         ),
       );
     });
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      throw Exception('Failed to pick image $e');
+    }
   }
 }
 

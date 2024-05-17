@@ -4,6 +4,7 @@ import 'package:reclamationapp/customWidgets/details_reclamation_alert.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
+import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/auth/login.dart';
 import 'package:reclamationapp/screen/reclamation/reclamation_card.dart';
@@ -23,10 +24,10 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
   ReclamationService reclamationService = ReclamationService();
   @override
   Widget build(BuildContext context) {
-    final senderEmail = ModalRoute.of(context)?.settings.arguments as String;
+    final senderEmail = ModalRoute.of(context)?.settings.arguments as User;
     //init reclamation
     Provider.of<ReclamationsProvider>(context, listen: false)
-        .initReclamationStudent(senderEmail);
+        .initReclamationStudent(senderEmail.email!);
     List<Reclamation> reclamation =
         Provider.of<ReclamationsProvider>(context).getReclamations();
     return Scaffold(
@@ -74,7 +75,7 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                                 .setReclamations([]);
                             Provider.of<ReclamationsProvider>(context,
                                     listen: false)
-                                .initReclamationStudent(senderEmail);
+                                .initReclamationStudent(senderEmail.email!);
                           },
                           child: const Text("Refresh")),
                       const SizedBox(

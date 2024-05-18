@@ -17,10 +17,10 @@ class DetailsReclamationAlert extends StatelessWidget {
         children: [
           Text('Object: \n${reclamation.object}'),
           Text('Message: \n${reclamation.message}'),
-          Text('Sender: \n${reclamation.sender}'),
-          Text('Status: \n${reclamation.status}'),
           Text(
-              'Created \nAt: ${reclamation.createdAt}/${reclamation.createdAt}/${reclamation.createdAt}'),
+              'Status: \n${!reclamation.status! ? " in progress " : " traited "}'),
+          Text(
+              'sended in : ${reclamation.createdAt!.substring(8, 10)}-${reclamation.createdAt!.substring(5, 7)}-${reclamation.createdAt!.substring(0, 4)}'),
         ],
       ),
       actions: [

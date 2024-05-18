@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:reclamationapp/Services/auth.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
-import 'package:reclamationapp/screen/reclamation/reclamation_add.dart';
+import 'package:reclamationapp/screen/reclamation/mobile/reclamation_add.dart';
 
 class LoginMobileScreen extends StatelessWidget {
   final String? iconPath;

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reclamationapp/Util/theme.dart';
+import 'package:reclamationapp/models/reclamation.dart';
 
 class ReclamationCard extends StatelessWidget {
-  final String? emailSender;
-  final String? objectReclamation;
+  final Reclamation? reclamation;
 
-  const ReclamationCard(
-      {super.key, required this.emailSender, required this.objectReclamation});
+  const ReclamationCard({super.key, required this.reclamation});
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +34,35 @@ class ReclamationCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'from : $emailSender',
-                        style: const TextStyle(
-                          color: AppTheme.lightPrimaryText,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'object ${reclamation!.object}',
+                            style: const TextStyle(
+                              color: AppTheme.lightPrimaryText,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(
+                            width: constraints.maxWidth * 0.47,
+                          ),
+                          reclamation!.status!
+                              ? const Icon(
+                                  Icons.done,
+                                  color: Colors.green,
+                                )
+                              : const Icon(
+                                  Icons.not_interested_sharp,
+                                  color: Colors.red,
+                                ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'object $objectReclamation',
+                        '${reclamation!.message!.length > 20 ? '${reclamation!.message!.substring(0, 26)}...' : reclamation!.message}',
                         style: const TextStyle(
                           color: AppTheme.lightSecondaryText,
                           fontSize: 16,

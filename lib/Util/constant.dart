@@ -13,3 +13,7 @@ double height() {
 }
 
 String baseUrl = "http://localhost:3000";
+
+String spliteText(String text, int wordCount) {
+  return text.substring(wordCount);
+}

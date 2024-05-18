@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reclamationapp/customWidgets/details_reclamation_alert.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
-import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/auth/login.dart';
+import 'package:reclamationapp/screen/reclamation/web/manage_reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/reclamation_card.dart';
 
-class ReclamationScreenMobile extends StatefulWidget {
+class ReclamationScreen extends StatefulWidget {
   //Route
-  static const String routeName = "/reclamationMobile";
+  static const String routeName = "/reclamation";
 
-  const ReclamationScreenMobile({super.key});
+  const ReclamationScreen({super.key});
 
   @override
-  State<ReclamationScreenMobile> createState() =>
-      _ReclamationScreenMobileState();
+  State<ReclamationScreen> createState() => _ReclamationScreenState();
 }
 
-class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
+class _ReclamationScreenState extends State<ReclamationScreen> {
   ReclamationService reclamationService = ReclamationService();
+
   @override
   Widget build(BuildContext context) {
-    final senderEmail = ModalRoute.of(context)?.settings.arguments as User;
     //init reclamation
     Provider.of<ReclamationsProvider>(context, listen: false)
-        .initReclamationStudent(senderEmail.email!);
+        .initReclamation(context);
     List<Reclamation> reclamation =
         Provider.of<ReclamationsProvider>(context).getReclamations();
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
           return Container(
+            decoration: const BoxDecoration(color: AppTheme.lightBackground),
             padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Column(
@@ -52,14 +51,22 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                           ),
                         ),
                         const Spacer(),
-                        OutlinedButton(
+                        FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                   context, LoginScreen.routeName);
                             },
                             child: const Text(
-                              'logout',
-                              style: TextStyle(color: AppTheme.lightPrimary),
+                              '🏠 logout',
+                              style: TextStyle(
+                                color: AppTheme.lightPrimary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             )),
                       ],
                     ),
@@ -68,16 +75,28 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OutlinedButton(
-                          onPressed: () {
-                            Provider.of<ReclamationsProvider>(context,
-                                    listen: false)
-                                .setReclamations([]);
-                            Provider.of<ReclamationsProvider>(context,
-                                    listen: false)
-                                .initReclamationStudent(senderEmail.email!);
-                          },
-                          child: const Text("Refresh")),
+                      FilledButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        onPressed: () {
+                          Provider.of<ReclamationsProvider>(context,
+                                  listen: false)
+                              .setReclamations([]);
+                          Provider.of<ReclamationsProvider>(context,
+                                  listen: false)
+                              .initReclamation(context);
+                        },
+                        child: const Text(
+                          "⟲ Refresh",
+                          style: TextStyle(
+                            color: AppTheme.lightSecondaryText,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         width: 20,
                       ),
@@ -88,19 +107,16 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                           .map(
                             (reclamation) => GestureDetector(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  builder: (context) {
-                                    return DetailsReclamationAlert(
-                                      reclamation: reclamation,
-                                    );
-                                  },
+                                Provider.of<ReclamationsProvider>(context,
+                                        listen: false)
+                                    .setCurrentReclamation(reclamation);
+                                Navigator.pushNamed(
+                                  context,
+                                  ManageReclamationScreen.routeName,
                                 );
                               },
                               child: ReclamationCard(
-                                emailSender: reclamation.sender,
-                                objectReclamation: reclamation.object,
+                                reclamation: reclamation,
                               ),
                             ),
                           )

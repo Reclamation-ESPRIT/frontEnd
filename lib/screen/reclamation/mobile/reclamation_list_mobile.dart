@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
+import 'package:reclamationapp/customWidgets/details_reclamation_alert.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
+import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/auth/login.dart';
-import 'package:reclamationapp/screen/reclamation/manage_reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/reclamation_card.dart';
 
-class ReclamationScreen extends StatefulWidget {
+class ReclamationScreenMobile extends StatefulWidget {
   //Route
-  static const String routeName = "/reclamation";
+  static const String routeName = "/reclamationMobile";
 
-  const ReclamationScreen({super.key});
+  const ReclamationScreenMobile({super.key});
 
   @override
-  State<ReclamationScreen> createState() => _ReclamationScreenState();
+  State<ReclamationScreenMobile> createState() =>
+      _ReclamationScreenMobileState();
 }
 
-class _ReclamationScreenState extends State<ReclamationScreen> {
+class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
   ReclamationService reclamationService = ReclamationService();
-
   @override
   Widget build(BuildContext context) {
+    final senderEmail = ModalRoute.of(context)?.settings.arguments as User;
     //init reclamation
     Provider.of<ReclamationsProvider>(context, listen: false)
-        .initReclamation(context);
+        .initReclamationStudent(senderEmail.email!);
     List<Reclamation> reclamation =
         Provider.of<ReclamationsProvider>(context).getReclamations();
     return Scaffold(
+      appBar: AppBar(),
       body: LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
           return Container(
-            decoration: const BoxDecoration(color: AppTheme.lightBackground),
             padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Column(
@@ -51,22 +54,14 @@ class _ReclamationScreenState extends State<ReclamationScreen> {
                           ),
                         ),
                         const Spacer(),
-                        FilledButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                            ),
+                        OutlinedButton(
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                   context, LoginScreen.routeName);
                             },
                             child: const Text(
-                              '🏠 logout',
-                              style: TextStyle(
-                                color: AppTheme.lightPrimary,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              'logout',
+                              style: TextStyle(color: AppTheme.lightPrimary),
                             )),
                       ],
                     ),
@@ -75,18 +70,14 @@ class _ReclamationScreenState extends State<ReclamationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FilledButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                        ),
+                      OutlinedButton(
                         onPressed: () {
                           Provider.of<ReclamationsProvider>(context,
                                   listen: false)
                               .setReclamations([]);
                           Provider.of<ReclamationsProvider>(context,
                                   listen: false)
-                              .initReclamation(context);
+                              .initReclamationStudent(senderEmail.email!);
                         },
                         child: const Text(
                           "⟲ Refresh",
@@ -107,17 +98,29 @@ class _ReclamationScreenState extends State<ReclamationScreen> {
                           .map(
                             (reclamation) => GestureDetector(
                               onTap: () {
-                                Provider.of<ReclamationsProvider>(context,
-                                        listen: false)
-                                    .setCurrentReclamation(reclamation);
-                                Navigator.pushNamed(
-                                  context,
-                                  ManageReclamationScreen.routeName,
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (context) {
+                                    return reclamation.status!
+                                        ? DefaultAlertDialog.doubleAction(
+                                            reclamation.object!,
+                                            "message :  ${reclamation.message!}\n sended in : ${reclamation.createdAt!.substring(8, 10)}-${reclamation.createdAt!.substring(5, 7)}-${reclamation.createdAt!.substring(0, 4)},",
+                                            "OK",
+                                            () => Navigator.pop(context),
+                                            "See answer",
+                                            //TODO navigate to new screen of aanswer of app
+                                            () => null,
+                                          )
+                                        : DefaultAlertDialog.info(
+                                            reclamation.object!,
+                                            "message :  ${reclamation.message!}\n \n sended in : ${reclamation.createdAt!.substring(8, 10)}-${reclamation.createdAt!.substring(5, 7)}-${reclamation.createdAt!.substring(0, 4)},",
+                                          );
+                                  },
                                 );
                               },
                               child: ReclamationCard(
-                                emailSender: reclamation.sender,
-                                objectReclamation: reclamation.object,
+                                reclamation: reclamation,
                               ),
                             ),
                           )

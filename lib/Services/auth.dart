@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:reclamationapp/Util/constant.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/user.dart';
-import 'package:reclamationapp/screen/reclamation/reclamation_list.dart';
+import 'package:reclamationapp/screen/reclamation/web/reclamation_list.dart';
 
 class UserServices {
   //Login

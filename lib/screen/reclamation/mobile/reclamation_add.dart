@@ -7,7 +7,7 @@ import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
 import 'package:reclamationapp/models/user.dart';
-import 'package:reclamationapp/screen/reclamation/reclamation_list_mobile.dart';
+import 'package:reclamationapp/screen/reclamation/mobile/reclamation_list_mobile.dart';
 
 class AddReclamationScreen extends StatefulWidget {
   static const routeName = '/addReclamation';
@@ -156,13 +156,33 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            TextButton(
-                                              child: Image.asset(
-                                                "assets/icons/gallery.png",
-                                                width:
-                                                    constraints.maxWidth * 0.1,
-                                              ),
-                                              onPressed: () => pickImage(),
+                                            Column(
+                                              children: [
+                                                TextButton(
+                                                  child: Image.asset(
+                                                    "assets/icons/gallery.png",
+                                                    width:
+                                                        constraints.maxWidth *
+                                                            0.1,
+                                                  ),
+                                                  onPressed: () => pickImage(),
+                                                ),
+                                                TextButton(
+                                                    child: Icon(
+                                                      size:
+                                                          constraints.maxWidth *
+                                                              0.1,
+                                                      Icons
+                                                          .highlight_remove_sharp,
+                                                      color:
+                                                          AppTheme.lightPrimary,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        image = null;
+                                                      });
+                                                    }),
+                                              ],
                                             ),
                                             Image.file(
                                               image!,
@@ -265,7 +285,7 @@ Widget addReclamationBtn(formKey, connectedUser, objecttController,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.arrow_outward_rounded),
-          Text('Add Reclamation'),
+          Text('Send Reclamation'),
           Spacer(),
         ],
       ),

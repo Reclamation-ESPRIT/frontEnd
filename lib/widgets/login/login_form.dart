@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reclamationapp/Services/auth.dart';
+import 'package:reclamationapp/customWidgets/default_button.dart';
 
 class LoginForm extends StatefulWidget {
   final BoxConstraints constraints;
   const LoginForm({super.key, required this.constraints});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginFormState createState() => _LoginFormState();
 }
 
@@ -26,11 +28,12 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: widget.constraints.maxHeight * 0.02),
           passwordField(pwdController, context, widget.constraints),
           SizedBox(height: widget.constraints.maxHeight * 0.02),
-          signInButton(() {
+          signInButton(() async {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();
               adminService.loginAdmin(
                   context, emailController.text, pwdController.text);
+           
             }
           }, context, widget.constraints),
         ],
@@ -85,8 +88,12 @@ Widget passwordField(TextEditingController controller, BuildContext context,
 // sign_in_button.dart
 Widget signInButton(
     VoidCallback onPressed, BuildContext context, BoxConstraints constraints) {
-  return ElevatedButton(
-    onPressed: onPressed,
-    child: const Text('Sign In'),
+  return DefaultButton.icon(
+    'Sign In',
+    onPressed,
+    const Icon(
+      Icons.login,
+      color: Colors.white,
+    ),
   );
 }

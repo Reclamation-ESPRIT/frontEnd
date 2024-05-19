@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
-import 'package:reclamationapp/customWidgets/details_reclamation_alert.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
 import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/auth/login.dart';
-import 'package:reclamationapp/screen/reclamation/reclamation_card.dart';
+import 'package:reclamationapp/widgets/reclamation/reclamation_card_mobile.dart';
 
 class ReclamationScreenMobile extends StatefulWidget {
   //Route
@@ -23,6 +22,7 @@ class ReclamationScreenMobile extends StatefulWidget {
 
 class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
   ReclamationService reclamationService = ReclamationService();
+
   @override
   Widget build(BuildContext context) {
     final senderEmail = ModalRoute.of(context)?.settings.arguments as User;
@@ -32,7 +32,9 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
     List<Reclamation> reclamation =
         Provider.of<ReclamationsProvider>(context).getReclamations();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Reclamation list"),
+      ),
       body: LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
           return Container(
@@ -119,7 +121,7 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                                   },
                                 );
                               },
-                              child: ReclamationCard(
+                              child: ReclamationCardMobile(
                                 reclamation: reclamation,
                               ),
                             ),

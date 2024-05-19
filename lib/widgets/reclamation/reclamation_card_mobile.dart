@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
 
-class ReclamationCard extends StatelessWidget {
+class ReclamationCardMobile extends StatelessWidget {
   final Reclamation? reclamation;
 
-  const ReclamationCard({super.key, required this.reclamation});
+  const ReclamationCardMobile({super.key, required this.reclamation});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,8 @@ class ReclamationCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,18 +48,9 @@ class ReclamationCard extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(
-                            width: constraints.maxWidth * 0.47,
-                          ),
-                          reclamation!.status!
-                              ? const Icon(
-                                  Icons.done,
-                                  color: Colors.green,
-                                )
-                              : const Icon(
-                                  Icons.not_interested_sharp,
-                                  color: Colors.red,
-                                ),
+                          // SizedBox(
+                          //   width: constraints.maxWidth * 0.47,
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -72,6 +65,15 @@ class ReclamationCard extends StatelessWidget {
                       const SizedBox(height: 16),
                     ],
                   ),
+                  reclamation!.status!
+                      ? const Icon(
+                          Icons.done,
+                          color: Colors.green,
+                        )
+                      : const Icon(
+                          Icons.not_interested_sharp,
+                          color: Colors.red,
+                        ),
                 ],
               ),
             ),

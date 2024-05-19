@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
+import 'package:reclamationapp/customWidgets/default_button.dart';
 import 'package:reclamationapp/models/reclamation.dart';
 import 'package:reclamationapp/models/user.dart';
+import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/mobile/reclamation_list_mobile.dart';
 
 class AddReclamationScreen extends StatefulWidget {
@@ -263,32 +266,19 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
 
 Widget addReclamationBtn(formKey, connectedUser, objecttController,
     msgController, image, BoxConstraints constraints) {
-  return ElevatedButton(
-    onPressed: () {
-      if (formKey.currentState?.validate() == true) {
-        formKey.currentState?.save();
+  return DefaultButton('Send Reclamation', () {
+    if (formKey.currentState?.validate() == true) {
+      formKey.currentState?.save();
 
-        final ReclamationService rs = ReclamationService();
-        rs.addNewReclamation(
-          Reclamation(
-            sender: connectedUser.email,
-            object: objecttController.text,
-            message: msgController.text,
-            attachFiles: image,
-          ),
-        );
-      }
-    },
-    child: SizedBox(
-      width: constraints.maxWidth * 0.4,
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.arrow_outward_rounded),
-          Text('Send Reclamation'),
-          Spacer(),
-        ],
-      ),
-    ),
-  );
+      final ReclamationService rs = ReclamationService();
+      rs.addNewReclamation(
+        Reclamation(
+          sender: connectedUser.email,
+          object: objecttController.text,
+          message: msgController.text,
+          attachFiles: image,
+        ),
+      );
+    }
+  });
 }

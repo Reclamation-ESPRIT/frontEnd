@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:reclamationapp/Util/constant.dart';
-import 'package:reclamationapp/Util/theme.dart';
+import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
 import 'package:reclamationapp/models/user.dart';
+import 'package:reclamationapp/screen/reclamation/web/manage_reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/web/reclamation_list.dart';
 
 class UserServices {
@@ -26,40 +27,14 @@ class UserServices {
         .post(uri, headers: headers, body: json.encode(loginObject))
         .then((response) async {
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, ReclamationScreen.routeName);
+        Navigator.pushReplacementNamed(
+            context, ManageReclamationScreen.routeName);
       } else {
         showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              contentPadding: const EdgeInsets.all(15),
-              backgroundColor: AppTheme.darkSecondary,
-              titleTextStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              contentTextStyle: const TextStyle(
-                fontSize: 16,
-              ),
-              actionsPadding: EdgeInsets.zero,
-              actionsAlignment: MainAxisAlignment.end,
-              buttonPadding: EdgeInsets.zero,
-              title: const Text("Error"),
-              content: const Text("Email or password incorrect"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Ok"),
-                )
-              ],
-            );
+            return DefaultAlertDialog.info(
+                "error", "Email or password incorrect");
           },
         );
       }

@@ -87,11 +87,14 @@ class LoginMobileScreen extends StatelessWidget {
                           .animate(autoPlay: true)
                           .shimmer(),
                       SizedBox(width: constraints.maxWidth * 0.05),
-                      const Text(
-                        "Google Sign In",
-                        style: TextStyle(
-                          color: AppTheme.lightPrimary,
-                          fontSize: 17,
+                      const FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          "Google Sign In",
+                          style: TextStyle(
+                            color: AppTheme.lightPrimary,
+                            fontSize: 17,
+                          ),
                         ),
                       )
                     ],

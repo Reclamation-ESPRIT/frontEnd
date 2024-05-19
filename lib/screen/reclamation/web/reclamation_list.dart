@@ -5,8 +5,7 @@ import 'package:reclamationapp/Util/theme.dart';
 import 'package:reclamationapp/models/reclamation.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/auth/login.dart';
-import 'package:reclamationapp/screen/reclamation/web/manage_reclamation.dart';
-import 'package:reclamationapp/screen/reclamation/reclamation_card.dart';
+import 'package:reclamationapp/widgets/reclamation/reclamation_card_web.dart';
 
 class ReclamationScreen extends StatefulWidget {
   //Route
@@ -20,19 +19,22 @@ class ReclamationScreen extends StatefulWidget {
 
 class _ReclamationScreenState extends State<ReclamationScreen> {
   ReclamationService reclamationService = ReclamationService();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final reclamationProvider = Provider.of<ReclamationsProvider>(context);
+
     //init reclamation
-    Provider.of<ReclamationsProvider>(context, listen: false)
-        .initReclamation(context);
-    List<Reclamation> reclamation =
+    reclamationProvider.initReclamation(context);
+    List<Reclamation> reclamations =
         Provider.of<ReclamationsProvider>(context).getReclamations();
     return Scaffold(
+      backgroundColor: AppTheme.lightBackground,
       body: LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
           return Container(
-            decoration: const BoxDecoration(color: AppTheme.lightBackground),
+            // decoration: const BoxDecoration(color: AppTheme.lightBackground),
             padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Column(
@@ -75,27 +77,31 @@ class _ReclamationScreenState extends State<ReclamationScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FilledButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.white),
-                        ),
-                        onPressed: () {
-                          Provider.of<ReclamationsProvider>(context,
-                                  listen: false)
-                              .setReclamations([]);
-                          Provider.of<ReclamationsProvider>(context,
-                                  listen: false)
-                              .initReclamation(context);
-                        },
-                        child: const Text(
-                          "⟲ Refresh",
-                          style: TextStyle(
-                            color: AppTheme.lightSecondaryText,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                      Row(
+                        children: [
+                          FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
+                            onPressed: () {
+                              Provider.of<ReclamationsProvider>(context,
+                                      listen: false)
+                                  .setReclamations([]);
+                              Provider.of<ReclamationsProvider>(context,
+                                      listen: false)
+                                  .initReclamation(context);
+                            },
+                            child: const Text(
+                              "⟲ Refresh",
+                              style: TextStyle(
+                                color: AppTheme.lightSecondaryText,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                       const SizedBox(
                         width: 20,
@@ -103,24 +109,9 @@ class _ReclamationScreenState extends State<ReclamationScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ...reclamation
-                          .map(
-                            (reclamation) => GestureDetector(
-                              onTap: () {
-                                Provider.of<ReclamationsProvider>(context,
-                                        listen: false)
-                                    .setCurrentReclamation(reclamation);
-                                Navigator.pushNamed(
-                                  context,
-                                  ManageReclamationScreen.routeName,
-                                );
-                              },
-                              child: ReclamationCard(
-                                reclamation: reclamation,
-                              ),
-                            ),
-                          )
-                          .toList(),
+                      ReclamationListdWeb(
+                        reclamations: reclamations,
+                      ),
                     ],
                   )
                 ],

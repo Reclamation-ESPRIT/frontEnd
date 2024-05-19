@@ -95,4 +95,19 @@ class ReclamationService {
       print('Error creating reclamation: $error');
     }
   }
+
+  Future<bool> archievedReclamation(String id) async {
+    final response = await http.put(Uri.parse("$url/archieved/$id"));
+    if (response.statusCode == 200) return true;
+    return false;
+  }
+
+  Future<bool> sendReclamationAnswer(String id, String answer) async {
+    final Map<String, String> body = {
+      'answer': answer,
+    };
+    final response = await http.put(Uri.parse("$url/update/$id"), body: body);
+    if (response.statusCode == 200) return true;
+    return false;
+  }
 }

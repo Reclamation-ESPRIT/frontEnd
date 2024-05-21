@@ -12,7 +12,7 @@ double height() {
   return mediaQueryData.size.height;
 }
 
-String baseUrl = "http://192.168.1.13:3000";
+String baseUrl = "http://51.38.125.78:9090";
 
 String spliteText(String text, int wordCount) {
   return text.substring(wordCount);

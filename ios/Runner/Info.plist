@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
+<dict><key>NSCameraUsageDescription</key>
+    <string>Allow access to camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow access to microphone for video recording</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allow access to photo library</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
@@ -68,7 +73,7 @@
         <true/>
         <key>NSExceptionDomains</key>
         <dict>
-            <key>172.20.10.2</key> <!-- Replace with your local IP -->
+            <key>51.38.125.78</key> <!-- Replace with your local IP -->
             <dict>
                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
                 <true/>
@@ -76,6 +81,24 @@
                 <true/>
             </dict>
         </dict>
+    </dict>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <!-- Optionally, restrict to specific domains -->
+        <!-- 
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>your-backend-domain.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
+        </dict>
+        -->
     </dict>
 </dict>
 </plist>

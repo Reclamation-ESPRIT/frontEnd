@@ -112,7 +112,7 @@ class _ReclamationScreenMobileState extends State<ReclamationScreenMobile> {
                                             () => Navigator.pop(context),
                                             "See answer",
                                             //TODO navigate to new screen of aanswer of app
-                                            () => null,
+                                            () {},
                                           )
                                         : DefaultAlertDialog.info(
                                             reclamation.object!,

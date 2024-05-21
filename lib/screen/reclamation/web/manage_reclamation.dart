@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
-import 'package:reclamationapp/Util/constant.dart';
 import 'package:reclamationapp/customWidgets/search_bar.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/web/reclamation_list.dart';
@@ -285,7 +284,7 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(sender, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(sender, style:const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 5.0),
             Container(
               padding: const EdgeInsets.all(10.0),

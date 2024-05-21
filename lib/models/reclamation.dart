@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 class Reclamation {
   String? id;
@@ -31,7 +32,7 @@ class Reclamation {
       "_id": id,
       "object": object,
       "message": message,
-      "attachFiles": attachFiles,
+      //  "attachFiles": attachFiles,
       "sender": sender,
       "archived": archived,
       "status": status,

@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:reclamationapp/Util/constant.dart';
 import 'package:reclamationapp/models/reclamation.dart';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ReclamationService {
   final String url = "$baseUrl/api/reclamation";
@@ -67,32 +70,46 @@ class ReclamationService {
   }
 
 //add new reclamattion
-  Future<void> addNewReclamation(Reclamation reclamation) async {
+
+  Future<void> addNewReclamation(
+      Map<String, dynamic> body, XFile? image) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('$url/create'));
-
-      // Add the text fields to the request
-      request.fields.addAll(reclamation
-          .toJson()
-          .map((key, value) => MapEntry(key, value.toString())));
-
-      // Add the file to the request
-      if (reclamation.attachFiles != null) {
-        request.files.add(await http.MultipartFile.fromPath(
-            'file', reclamation.attachFiles!.path));
-      }
-
-      // Send the request
-      var response = await request.send();
-
-      // Check the response status
-      if (response.statusCode == 201) {
-        print('Reclamation created successfully');
+      Dio dio = Dio();
+      dio.options.headers['Accept'] = 'application/json; charset=utf-8';
+      dio.options.headers['Content-Type'] = 'multipart/form-data';
+      FormData formData;
+      if (image == null) {
+        formData = FormData.fromMap({
+          "sender": body['sender'],
+          "object": body['object'],
+          "message": body['message'],
+        });
       } else {
-        print('Failed to create reclamation: ${response.reasonPhrase}');
+        var fileTest = await MultipartFile.fromFile(image.path,
+            filename: image.path.split('/').last);
+        formData = FormData.fromMap({
+          "sender": body['sender'],
+          "object": body['object'],
+          "message": body['message'],
+          "image": fileTest
+        });
       }
-    } catch (error) {
-      print('Error creating reclamation: $error');
+      Response response = await dio.post(
+        "$url/create",
+        data: formData,
+      );
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Data: ${response.data}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Reclamation added successfully.');
+      } else {
+        throw Exception('Failed to add reclamation.');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Failed to add reclamation.');
     }
   }
 

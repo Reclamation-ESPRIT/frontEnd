@@ -9,7 +9,6 @@ import 'package:reclamationapp/Util/constant.dart';
 import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
 import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/screen/reclamation/web/manage_reclamation.dart';
-import 'package:reclamationapp/screen/reclamation/web/reclamation_list.dart';
 
 class UserServices {
   //Login

@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
 import 'package:reclamationapp/Util/theme.dart';
+import 'package:reclamationapp/customWidgets/default_alert_dialog.dart';
 import 'package:reclamationapp/customWidgets/default_button.dart';
-import 'package:reclamationapp/models/reclamation.dart';
 import 'package:reclamationapp/models/user.dart';
 import 'package:reclamationapp/screen/reclamation/mobile/reclamation_list_mobile.dart';
 
@@ -41,7 +41,7 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
     final connectedUser = ModalRoute.of(context)?.settings.arguments as User;
     return LayoutBuilder(builder: (context, BoxConstraints constraints) {
       return GestureDetector(
-        onTap: () => FocusManager().primaryFocus?.unfocus(),
+        onTap: () => SystemChannels.textInput.invokeMethod('TextInput.hide'),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -214,7 +214,8 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
                                               objecttController,
                                               msgController,
                                               image,
-                                              constraints),
+                                              constraints,
+                                              context),
                                         ],
                                       ),
                                     )
@@ -232,12 +233,14 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
                                           ),
                                           const Divider(),
                                           addReclamationBtn(
-                                              formKey,
-                                              connectedUser,
-                                              objecttController,
-                                              msgController,
-                                              image,
-                                              constraints),
+                                            formKey,
+                                            connectedUser,
+                                            objecttController,
+                                            msgController,
+                                            image,
+                                            constraints,
+                                            context,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -278,8 +281,8 @@ class AddReclamationScreenState extends State<AddReclamationScreen> {
 }
 
 Widget addReclamationBtn(formKey, connectedUser, objecttController,
-    msgController, image, BoxConstraints constraints) {
-  return DefaultButton('Send Reclamation', () {
+    msgController, image, BoxConstraints constraints, BuildContext context) {
+  return DefaultButton('Send Reclamation', () async {
     if (formKey.currentState?.validate() == true) {
       formKey.currentState?.save();
 
@@ -289,16 +292,19 @@ Widget addReclamationBtn(formKey, connectedUser, objecttController,
         "object": objecttController.text,
         "message": msgController.text,
       };
-      rs.addNewReclamation(
-        //   Reclamation(
-        //     sender: connectedUser.email,
-        //     object: objecttController.text,
-        //     message: msgController.text,
-        //     // attachFiles: image,
-        //   ),
+      if (await rs.addNewReclamation(
         reclamationBody,
         image,
-      );
+      )) {
+        objecttController.text = "";
+        msgController.text = "";
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) => DefaultAlertDialog.info(
+              "Good", "your reclamation was send successfully"),
+        );
+      }
     }
   });
 }

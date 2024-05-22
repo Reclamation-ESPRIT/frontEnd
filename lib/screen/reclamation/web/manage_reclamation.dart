@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reclamationapp/Services/reclamation.dart';
+import 'package:reclamationapp/Util/constant.dart';
 import 'package:reclamationapp/customWidgets/search_bar.dart';
 import 'package:reclamationapp/providers/reclamation.dart';
 import 'package:reclamationapp/screen/reclamation/web/reclamation_list.dart';
@@ -94,6 +95,7 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
                                               .map((reclamation) {
                                             return GestureDetector(
                                               onTap: () {
+                                                print(reclamation);
                                                 reclamationProvider
                                                     .setCurrentReclamation(
                                                         reclamation);
@@ -162,6 +164,7 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
                                           reclamation.sender!,
                                           reclamation.message!,
                                           "${reclamation.createdAt!.substring(8, 10)}-${reclamation.createdAt!.substring(5, 7)}-${reclamation.createdAt!.substring(0, 4)}",
+                                          reclamation.attachFiles,
                                         ),
                                         reclamation.answer == null
                                             ? const SizedBox()
@@ -169,7 +172,7 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
                                                 "Admin",
                                                 reclamation.answer!,
                                                 "${reclamation.createdAt!.substring(8, 10)}-${reclamation.createdAt!.substring(5, 7)}-${reclamation.createdAt!.substring(0, 4)}",
-                                              ),
+                                                null),
                                       ],
                                     ),
                                   ),
@@ -271,7 +274,8 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
     );
   }
 
-  Widget _buildReceivedMessage(String sender, String message, String time) {
+  Widget _buildReceivedMessage(
+      String sender, String message, String time, String? imageURL) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment:
@@ -284,7 +288,7 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(sender, style:const TextStyle(fontWeight: FontWeight.bold)),
+            Text(sender, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 5.0),
             Container(
               padding: const EdgeInsets.all(10.0),
@@ -296,6 +300,13 @@ class _ManageReclamationScreenState extends State<ManageReclamationScreen> {
             ),
             const SizedBox(height: 5.0),
             Text(time, style: TextStyle(color: Colors.grey[600])),
+            imageURL != null
+                ? Image.network(
+                    imageURL,
+                    width: width() * 0.2,
+                    height: height() * 0.4,
+                  )
+                : const SizedBox(height: 5.0),
           ],
         ),
       ],

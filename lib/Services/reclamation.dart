@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reclamationapp/Util/constant.dart';
@@ -25,7 +24,6 @@ class ReclamationService {
     await http.get(Uri.parse(url), headers: headers).then((response) {
       if (response.statusCode == 200) {
         List<dynamic> dynamics = json.decode(response.body)['reclamations'];
-        //TODO improve this func with provider
         for (var reclamation in dynamics) {
           reclamations.add(Reclamation.fromJson(reclamation));
         }
@@ -70,8 +68,7 @@ class ReclamationService {
   }
 
 //add new reclamattion
-
-  Future<void> addNewReclamation(
+  Future<bool> addNewReclamation(
       Map<String, dynamic> body, XFile? image) async {
     try {
       Dio dio = Dio();
@@ -99,16 +96,12 @@ class ReclamationService {
         data: formData,
       );
 
-      print('Response Status: ${response.statusCode}');
-      print('Response Data: ${response.data}');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Reclamation added successfully.');
+      if (response.statusCode == 201) {
+        return true;
       } else {
-        throw Exception('Failed to add reclamation.');
+        return false;
       }
     } catch (e) {
-      print('Error: $e');
       throw Exception('Failed to add reclamation.');
     }
   }

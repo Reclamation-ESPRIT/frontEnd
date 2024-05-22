@@ -1,11 +1,8 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 class Reclamation {
   String? id;
   String? object;
   String? message;
-  File? attachFiles;
+  String? attachFiles;
   String? sender;
   bool? status;
   bool? archived;
@@ -58,6 +55,6 @@ class Reclamation {
 
   @override
   String toString() {
-    return 'Reclamation{id: $id, object: $object, message: $message, sender: $sender, status: $status,  answer: $answer, archived: $archived,attachFiles : $attachFiles createdAt: $createdAt, updatedAt: $updatedAt}';
+    return 'Reclamation{id: $id, object: $object, message: $message, sender: $sender, status: $status,  answer: $answer, archived: $archived , attachFiles : $attachFiles createdAt: $createdAt, updatedAt: $updatedAt}';
   }
 }
